@@ -1,5 +1,26 @@
 package controller;
 
-public class LogoutServlet {
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/LogoutServlet")
+public class LogoutServlet extends HttpServlet {
+
+	private static final long serialVersionUID = -2970065148247146523L;
+	
+	public LogoutServlet() {
+		super();
+	}
+	
+	public void destroy() {
+		super.destroy();
+	}
+	
+	// Servlet Service
+	public void service(HttpServletRequest req, HttpServletResponse resp) {
+		
+	}
 
 }

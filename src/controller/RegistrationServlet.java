@@ -5,12 +5,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/AllExcercicesServlet")
-public class AllExcercicesServlet extends HttpServlet {
+@WebServlet("/RegistrationServlet")
+public class RegistrationServlet extends HttpServlet {
 
-	private static final long serialVersionUID = -6612875793111318238L;
+	private static final long serialVersionUID = 3830415097795711232L;
 	
-	public AllExcercicesServlet() {
+	public RegistrationServlet() {
 		super();
 	}
 	
