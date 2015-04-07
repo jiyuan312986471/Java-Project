@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +21,9 @@ public class LogoutServlet extends HttpServlet {
 	}
 	
 	// Servlet Service
-	public void service(HttpServletRequest req, HttpServletResponse resp) {
-		
+	public void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		req.getSession().invalidate();
+		resp.sendRedirect("index.jsp");
 	}
 
 }
