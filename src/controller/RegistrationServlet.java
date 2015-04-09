@@ -20,6 +20,15 @@ public class RegistrationServlet extends HttpServlet {
 	
 	// Servlet Service
 	public void service(HttpServletRequest req, HttpServletResponse resp) {
+		// get info
+		
+		// check info
+		
+		// store in DB
+		
+		// store in the session
+		
+		// to the index page
 		
 	}
 
