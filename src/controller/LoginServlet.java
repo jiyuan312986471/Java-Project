@@ -31,14 +31,22 @@ public class LoginServlet extends HttpServlet {
 	
 	// Servlet Service
 	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String username = req.getParameter("username");
-		String password = req.getParameter("password");
+		String username = null;
+		String password = null;
+		
+		username = req.getParameter("username");
+		if ( username == null )
+			username = req.getAttribute("username").toString();
+		
+		password = req.getParameter("password");
+		if ( password == null )
+			password = req.getAttribute("password").toString();
 		
 		try {
 			if ( UserDB.checkLogin(username, password) ) {
 				User u = UserDB.getUser(username);
 				req.getSession().setAttribute("mail", u.getEmail());
-				req.getSession().setAttribute("name", u.getFirstName() + u.getLastName());
+				req.getSession().setAttribute("name", u.getFirstName() + " " + u.getLastName());
 				req.getSession().setAttribute("User", u);
 				req.getRequestDispatcher("/index.jsp").forward(req, resp);
 			}

@@ -42,7 +42,7 @@
 			    <div>
 			      	<% if(session.getAttribute("name") == null) { %>
 					<form class="navbar-form form-inline pull-right"  action="<%= request.getContextPath()%>/LoginServlet" method="post">
-			    		<input type="text" placeholder="User name" name="username">
+			    		<input type="text" placeholder="Email" name="username">
 			    		<input type="password" placeholder="Password" name="password">
 			    		<input type="hidden" name="pageSuccess"  value='<%= request.getParameter("page")%>'/>
 			    		<button type="submit" class="btn">Sign in</button>
