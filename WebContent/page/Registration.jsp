@@ -1,12 +1,74 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="model.db.UserDB" %>
 
-</body>
-</html>
+<%  if(session.getAttribute("name") == null) { %>
+<jsp:include page="/include/Header.jsp">
+<jsp:param name="title" value="CodeEvaluation"/>
+</jsp:include>
+
+<div class="container">
+
+	<div class="modal-content" style="filter:alpha(Opacity=95); -moz-opacity:0.95; opacity:0.95; background-color:black; color:white;">
+	
+         <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Registration</h4>
+         </div>
+         
+         <form class="form-horizontal" action="<%= request.getContextPath()%>/RegistrationServlet" method="post">
+	         <div class="modal-body">
+	         
+				  <div class="form-group">
+				    <label for="inputEmail" class="col-sm-2 control-label">Email: </label>
+				    <div class="col-sm-10">
+				      <input type="email" class="form-control" id="inputEmail" placeholder="Please enter your email..." name="userEmail" value="<%= request.getParameter("userEmail") == null ?"": request.getParameter("userEmail") %>">
+				    </div>
+				  </div>
+				  
+				  <div class="form-group">
+				    <label for="inputFirstName" class="col-sm-2 control-label">First Name: </label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" id="inputFirstName" placeholder="Your first name..." name="userFirstName" value="<%= request.getParameter("userFirstName") == null ?"": request.getParameter("userFirstName") %>">
+				    </div>
+				  </div>
+				  
+				  <div class="form-group">
+				    <label for="inputLastName" class="col-sm-2 control-label">Last Name: </label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" id="inputLastName" placeholder="Your last name..." name="userLastName" value="<%= request.getParameter("userLastName") == null ?"": request.getParameter("userLastName") %>">
+				    </div>
+				  </div>
+				  
+				  <div class="form-group">
+				    <label for="inputPwd" class="col-sm-2 control-label">Password: </label>
+				    <div class="col-sm-10">
+				      <input type="password" class="form-control" id="inputPwd" placeholder="Password..." name="userPwd" value="<%= request.getParameter("userPwd") == null ?"": request.getParameter("userPwd") %>">
+				    </div>
+				    <p class="help-block">Password must be at least 8 characters long</p>
+				  </div>
+				  
+				  <div class="form-group">
+				    <label for="inputConfirmPwd" class="col-sm-2 control-label">Confirm Password: </label>
+				    <div class="col-sm-10">
+				      <input type="password" class="form-control" id="inputConfirmPwd" placeholder="Confirm Password..." name="userConfirmPwd" value="<%= request.getParameter("userConfirmPwd") == null ?"": request.getParameter("userConfirmPwd") %>">
+				    </div>
+				  </div>
+				  
+	         </div>
+         
+	         <div class="modal-footer">
+	         	<button type="submit" class="btn btn-primary">Save</button>
+	            <button type="reset" class="btn btn-default" data-dismiss="modal">Reset All</button>
+	         </div>
+         </form>
+      </div>
+      
+</div>
+
+<jsp:include page="/include/Footer.jsp" />
+<%	
+    } else {
+    	request.getSession().setAttribute("messageError", "Please Logout!");
+		request.getRequestDispatcher("/index.jsp").forward(request, response);
+    }
+%>
+
