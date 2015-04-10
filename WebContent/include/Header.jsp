@@ -54,9 +54,7 @@
 				          	<span class="glyphicon glyphicon-user"></span> <%= session.getAttribute("name") %>
 				          </a>
 				          <ul class="dropdown-menu">
-				          	<li>
-				          		<a href="<%= request.getContextPath()%>/MyHistoriesServlet">My Histories</a>\
-				          	</li>
+				          	<li><a href="<%= request.getContextPath()%>/MyHistoriesServlet">My Histories</a></li>
 				            <li><a href="<%= request.getContextPath()%>/LogoutServlet">Logout</a></li>
 				          </ul>
 				        </li>
