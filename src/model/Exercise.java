@@ -8,6 +8,8 @@ public class Exercise implements Serializable {
 	
 	private String title;
 	private String description;
+	private String contentHead;
+	private String contentFoot;
 	
 	public Exercise() {
 	}
@@ -26,6 +28,22 @@ public class Exercise implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public String getContentHead() {
+		return contentHead;
+	}
+	
+	public void setContentHead(String contentHead) {
+		this.contentHead = contentHead;
+	}
+	
+	public String getContentFoot() {
+		return contentFoot;
+	}
+	
+	public void setContentFoot(String contentFoot) {
+		this.contentFoot = contentFoot;
 	}
 
 }
