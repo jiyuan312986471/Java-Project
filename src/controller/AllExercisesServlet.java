@@ -15,14 +15,14 @@ import exception.DatabaseAccessError;
 import model.Exercise;
 import model.db.ExerciseDB;
 
-@WebServlet("/AllExcercicesServlet")
-public class AllExcercicesServlet extends HttpServlet {
+@WebServlet("/AllExercisesServlet")
+public class AllExercisesServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -6612875793111318238L;
 	
 	private static String msgErrorLogin = "Please login";
 	
-	public AllExcercicesServlet() {
+	public AllExercisesServlet() {
 		super();
 	}
 	

@@ -15,7 +15,7 @@
 			<% if ( session.getAttribute("mail") == null ) { %>
 				<a class="btn btn-primary btn-lg" href="<%= request.getContextPath()%>/page/Registration.jsp" role="button">Sign Up</a>
 			<% } else { %>
-				<a class="btn btn-primary btn-lg" href="<%= request.getContextPath()%>/page/AllExercises.jsp" role="button">Get Start</a>
+				<a class="btn btn-primary btn-lg" href="<%= request.getContextPath()%>/AllExercisesServlet" role="button">Get Start</a>
 			<% } %>
 		</p> 
 	</div>

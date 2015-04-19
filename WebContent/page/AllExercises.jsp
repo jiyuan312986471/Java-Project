@@ -22,8 +22,22 @@
         	<h4 class="modal-title" id="myModalLabel">All Projects</h4>
     	</div>
         
-        <% if ( listExo.size() > 0 ) { %>
-		<div class="modal-body">
+        <% if ( listExo == null || listExo.size() <= 0 ) { %>
+        	<form action="<%= request.getContextPath()%>/index.jsp">
+				<div class="modal-body">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-sm-12 text-center"><h3>There is no exercise yet.</h3></div>
+						</div>
+					</div>
+				</div>
+				         
+				<div class="modal-footer">
+				   	<input type="submit" class="btn btn-primary" value="Back">
+				</div>
+			</form>		
+		<% } else { %>
+			<div class="modal-body">
 			<table class="table table-bordered text-center">
 				<thead>
 				<tr>
@@ -43,20 +57,6 @@
 				</tbody>
 			</table>
 		</div>
-		<% } else { %>
-			<form action="<%= request.getContextPath()%>/index.jsp">
-				<div class="modal-body">
-					<div class="form-group">
-						<div class="row">
-							<div class="col-sm-12 text-center"><h3>There is no exercise yet.</h3></div>
-						</div>
-					</div>
-				</div>
-				         
-				<div class="modal-footer">
-				   	<input type="submit" class="btn btn-primary" value="Back">
-				</div>
-			</form>
 		<% } %>
 	</div>
 </div>

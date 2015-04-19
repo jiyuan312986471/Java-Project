@@ -22,22 +22,19 @@
          <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel"><%= exo.getTitle() %></h3>
          </div>
-		 
-		 <div class="modal-body">
-		 	<div class="form-group">
-			 	<div class="row">
-			 		<label class="col-sm-2"><h4>Description</h4></label>
-			 	</div>
-		 	</div>
-				
-			<div class="form-group">
-				<div class="row">
-					<label class="col-sm-1 col-sm-offset-1">Description: </label>
-					<label class="col-sm-9" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><%= exo.getDescription() %></label>
-				</div>
+
+		<div class="modal-body">
+			<div class="row">
+				<label class="col-sm-2"><h4>Description</h4></label>
+			</div>
+
+
+			<div class="row">
+				<label class="col-sm-1 col-sm-offset-1">Description: </label>
+				<label class="col-sm-9" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><%= exo.getDescription() %></label>
 			</div>
 		</div>
-		         
+
 		<hr>
 
 		<form action="<%= request.getContextPath()%>/CompilerServlet" method="post">
@@ -45,7 +42,15 @@
 			<div class="form-group">
 				<div class="row">
 				 	<label class="col-sm-2"><h4>Have a try</h4></label>
-				 	<input type="text" name="code">
+				</div>
+				
+				<div class="row">
+					<div class="col-sm-offset-1">
+						<div class="col-sm-11">
+							<pre><%= exo.getContentHead() %><textarea style="overflow:scroll; overflow-x:hidden;" class="form-control" placeholder="Write your code here..." rows="10" name="code"><%= request.getParameter("code")==null?"":request.getParameter("code")%></textarea>
+		<%= exo.getContentFoot() %></pre>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

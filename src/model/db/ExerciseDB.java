@@ -13,8 +13,8 @@ import exception.DatabaseAccessError;
 import model.Exercise;
 
 public class ExerciseDB {
-	private static String QUERY_GET_EXOS = "SELECT title, description FROM exercise";
-	private static String QUERY_GET_EXO_BY_PK = "SELECT title, description FROM exercise WHERE title = ?";
+	private static String QUERY_GET_EXOS = "SELECT title, description, contentHead, contentFoot FROM exercise";
+	private static String QUERY_GET_EXO_BY_PK = "SELECT title, description, contentHead, contentFoot FROM exercise WHERE title = ?";
 	
 	// get exo by PK
 	public static Exercise getExoByTitle(String title) throws Exception {
@@ -33,6 +33,8 @@ public class ExerciseDB {
 				exo = new Exercise();
 				exo.setTitle(result.getString(1));
 				exo.setDescription(result.getString(2));
+				exo.setContentHead(result.getString(3));
+				exo.setContentFoot(result.getString(4));
 			}
 
 			result.close();
@@ -49,7 +51,7 @@ public class ExerciseDB {
 		}
 	}
 
-	// get all projects
+	// get all exos
 	public static ArrayList<Exercise> getAllExos() throws ClassNotFoundException, SQLException, NamingException, DatabaseAccessError {
 		Connection con = DBUtil.getConnection();
 
@@ -63,6 +65,8 @@ public class ExerciseDB {
 			Exercise exo = new Exercise();
 			exo.setTitle(result.getString(1));
 			exo.setDescription(result.getString(2));
+			exo.setContentHead(result.getString(3));
+			exo.setContentFoot(result.getString(4));
 
 			// add exo into list
 			listExo.add(exo);
