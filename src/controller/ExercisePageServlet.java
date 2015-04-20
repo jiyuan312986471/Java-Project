@@ -38,7 +38,7 @@ public class ExercisePageServlet extends HttpServlet {
 		}
 		
 		// save to request
-		req.setAttribute("exo", exo);
+		req.getSession().setAttribute("exo", exo);
 		
 		// forward to ExercisePage
 		req.getRequestDispatcher("/page/ExercisePage.jsp").forward(req, resp);

@@ -14,7 +14,8 @@
 	<jsp:param name="title" value="CodeEvaluation"/>
 </jsp:include>
 
-<%  Exercise exo = (Exercise) request.getAttribute("exo"); %>
+<%  //Exercise exo = (Exercise) request.getAttribute("exo"); %>
+<%  Exercise exo = (Exercise) session.getAttribute("exo"); %>
 
 <div class="container">
 
@@ -56,7 +57,7 @@
 		</div>
 		         
 		<div class="modal-footer">
-		    <input type="submit" class="btn btn-primary" value="Save">
+		    <input type="submit" class="btn btn-primary" value="Submit">
 		</div>
 	    </form>
 	</div>
