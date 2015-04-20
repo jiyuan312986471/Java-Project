@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,15 +23,13 @@ public class CompilerServlet extends HttpServlet {
 	}
 	
 	// Servlet Service
-	public void service(HttpServletRequest req, HttpServletResponse resp) {
+	public void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		// get exo and code
 		Exercise exo = (Exercise) req.getSession().getAttribute("exo");
 		String code = req.getParameter("code");
 		
-		// generate java code
-		String javaCode = exo.getContentHead() + code + exo.getContentFoot();
-		
 		// compile
+		DynamicCompile.compile(exo, code);
 	}
 
 }
