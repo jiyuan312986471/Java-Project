@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import compiler.DynamicCompile;
+
 import model.Exercise;
 import model.User;
 
@@ -32,13 +34,16 @@ public class CompilerServlet extends HttpServlet {
 		String code = req.getParameter("code");
 		
 		// compile
+		String result = null;
 		try {
-			DynamicCompile.compile(exo, code, u);
+			result = DynamicCompile.compile(exo, code, u);
 		} catch (ClassNotFoundException | NoSuchMethodException
 				| SecurityException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println(result);
 	}
 
 }
