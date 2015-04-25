@@ -34,8 +34,8 @@ public class DynamicCompile {
         
         // write code into file
         String root = "E:\\Lernen\\ESIGELEC\\2eme_annee\\J2EE\\Projet\\CodeEvaluation\\javaFiles\\";
-        String rootPath = root + username;
-        File dir = new File(rootPath);
+        String rootUser = root + username;
+        File dir = new File(rootUser);
         
         if ( !dir.exists() ) {  
             dir.mkdir();  
@@ -63,28 +63,33 @@ public class DynamicCompile {
         javaFileManager.close();  
           
         // prepare commands
-        String command = "java -cp ../ " + username + "/" + classname;
-        String[] cmdArray = { 
-        	"cmd /k cd\\",
-        	"cmd /k cd " + rootPath,
-        	command
-        };
+        String command = "cd\\" + "\n" +
+        				 "cd " + rootUser + "\n" +
+        				 "java -cp ../ " + username + "/" + classname;
+        String exeName = classname + ".bat";
+        FileWriter cmd = new FileWriter(new File(dir,exeName));
+        cmd.write(command);
+        cmd.flush();
+        cmd.close();
         
         // run program
         Runtime run = Runtime.getRuntime();
-        Process process = run.exec(cmdArray);
-        System.out.println(command);
-//        Process process = run.exec("java -cp ./temp temp/" + classname);
+        Process process = run.exec("cmd /c " + rootUser + "\\" + exeName);
         
-        InputStream in = process.getInputStream();  
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));  
+        InputStream in = process.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        System.out.println(reader.toString());
         String info  = "";
         String result = "";
         while ( (info = reader.readLine()) != null ) {
             System.out.println(info);
-            result += info;
+            result += info + "\n";
         }
-        System.out.println("result: " + result);
+        
+        // get system output as result
+        String[] s = result.split(classname);
+        result = s[s.length - 1];
+        System.out.println("\nResult is: " + result);
         return result;
         
 	}

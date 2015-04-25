@@ -42,7 +42,6 @@ public class CompilerServlet extends HttpServlet {
 				| IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
-		System.out.println(result);
 	}
 
 }
