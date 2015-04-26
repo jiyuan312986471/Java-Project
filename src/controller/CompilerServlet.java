@@ -36,6 +36,7 @@ public class CompilerServlet extends HttpServlet {
 		String result = DynamicCompiler.dynamicCompile(exo, code, u);
 		
 		// check result
+		System.out.println(result);
 	}
 
 }

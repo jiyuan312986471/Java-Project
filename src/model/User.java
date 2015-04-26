@@ -59,6 +59,10 @@ public class User implements Serializable {
 		return firstName + " " + lastName;
 	}
 	
+	public String getAttachedUserName() {
+		return firstName + lastName;
+	}
+	
 	// email check
 	public static boolean isEmail(String email) {
 		Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");

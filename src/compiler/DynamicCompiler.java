@@ -23,13 +23,20 @@ import model.User;
 
 public class DynamicCompiler {
 	
+	private static String ROOT = "E:\\Lernen\\ESIGELEC\\2eme_annee\\J2EE\\Projet\\CodeEvaluation\\javaFiles\\";
+	private static JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+	private static DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+	private static StandardJavaFileManager javaFileManager = javaCompiler.getStandardFileManager(diagnostics, null, null);
+	
+	private static String result = "";
+	
 	public static String dynamicCompile(Exercise exo, String code, User u) throws IOException {
         // get classname
         String classname = getClassName(exo);
         String filename = classname + ".java";
         
         // get username
-        String username = u.getUserName();
+        String username = u.getAttachedUserName();
         
         // get current time
         String currentTime = getCurrentTime();
@@ -38,8 +45,7 @@ public class DynamicCompiler {
         String source = setSrcCode(username, classname, currentTime, code, exo);
         
         // create file path
-        String root = "E:\\Lernen\\ESIGELEC\\2eme_annee\\J2EE\\Projet\\CodeEvaluation\\javaFiles\\";
-        String rootExo = root + username + "\\" + classname;
+        String rootExo = ROOT + username + "\\" + classname;
         String rootClass = rootExo + "\\" + currentTime;
         File dir = new File(rootClass);
         
@@ -47,90 +53,133 @@ public class DynamicCompiler {
         	dir.mkdirs();
         
         // write code into file
-        writeCode(dir, filename, source);
-        
-        // get compiler
-        JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
-        
-        // use diagnostic listener
-        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
-        
-        // get file manager
-        StandardJavaFileManager javaFileManager = javaCompiler.getStandardFileManager(diagnostics, null, null); 
-        
-        // associate file manager with file
-        Iterable<? extends JavaFileObject> it = javaFileManager.getJavaFileObjects(new File(dir,filename));  
-        
-        // generate compilation task
-        CompilationTask task = javaCompiler.getTask(null, javaFileManager, diagnostics, Arrays.asList("-d", root), null, it);
+        writeFile(dir, filename, source);
         
         // compile
-        String result = "";
-		boolean success = task.call();
+		boolean success = compile(dir, filename);
+		
+		// return compilation result
 		if ( !success ) {
-			result += "Compilation Failed:\n";
-			for (Diagnostic<?> diagnostic : diagnostics.getDiagnostics()) {
-				result += "    " + diagnostic.getKind() + "!\n";
-				result += "    At: " + diagnostic.getSource() + "\n";
-				result += "    Message: " + diagnostic.getMessage(null);
-			}
+			result = setFailMsg(diagnostics);
 			javaFileManager.close();
-			System.out.println(result);
 			return result;
 		}
 		else {
 			javaFileManager.close();
 
-			// prepare commands
-			String command = "pushd " + root + "\n" + "java -cp . " + username
-					+ "." + classname + "." + currentTime + "." + classname;
-			String exeName = classname + ".bat";
-			FileWriter cmd = new FileWriter(new File(dir, exeName));
-			cmd.write(command);
-			cmd.flush();
-			cmd.close();
-
-			// run program
-			Runtime run = Runtime.getRuntime();
-			Process process = run.exec("cmd /c " + rootClass + "\\" + exeName);
-
-			InputStream in = process.getInputStream();
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(in));
-			System.out.println(reader.toString());
-			String info = "";
-
-			while ((info = reader.readLine()) != null) {
-				result += info + "\n";
+			// check if user has cheated
+			boolean cheated = hasCheated(exo, code);
+			
+			if ( cheated ) {
+				result = "Please do not cheat.";
 			}
+			else {
+				// prepare commands
+				String commandArray = getCommandArray(ROOT, username, classname, currentTime);
+				String batName = classname + ".bat";
+				writeFile(dir, batName, commandArray);
 
-			// get system output as result
-			String[] s = result.split(classname);
-			result = s[s.length - 1];
-			result = "Compilation Success.\n" + "Result:" + result;
-			System.out.println(result);
+				// run program
+				result = run(rootClass, batName);
+
+				// get system output as result
+				result = getOutputResult(result, classname);
+			}
 			return result;
 		}
 	}
+	
 	
 	private static String getClassName(Exercise exo) {
 		String[] subs = exo.getContentHead().split("\\{")[0].split("class");
         return subs[subs.length - 1].trim();
 	}
 	
+	
 	private static String getCurrentTime() {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd_HH_mm");
         return "Exo" + df.format(new Date());
 	}
 	
+	
 	private static String setSrcCode(String username, String classname, String currentTime, String code, Exercise exo) {
 		return "package " + username + "." + classname + "." + currentTime + ";\n\n" + exo.getContentHead() + "\n" + code + "\n" + exo.getContentFoot();
 	}
 	
-	private static void writeCode(File dir, String filename, String src) throws IOException {
+	
+	private static void writeFile(File dir, String filename, String src) throws IOException {
 		FileWriter writer = new FileWriter(new File(dir,filename));  
         writer.write(src);
         writer.flush();  
         writer.close();
+	}
+	
+	
+	private static boolean compile(File dir, String filename) {        
+        // associate file manager with file
+        Iterable<? extends JavaFileObject> it = javaFileManager.getJavaFileObjects(new File(dir,filename));  
+        
+        // generate compilation task
+        CompilationTask task = javaCompiler.getTask(null, javaFileManager, diagnostics, Arrays.asList("-d", ROOT), null, it);
+        
+        // compile
+		return task.call();
+	}
+	
+	
+	private static String setFailMsg(DiagnosticCollector<JavaFileObject> diagnostics) {
+		String result = "Compilation Failed:\n";
+		for (Diagnostic<?> diagnostic : diagnostics.getDiagnostics()) {
+			result += "    " + diagnostic.getKind() + "!\n";
+			result += "    At: " + diagnostic.getSource() + "\n";
+			result += "    Message: " + diagnostic.getMessage(null);
+		}
+		return result;
+	}
+	
+	
+	private static String getCommandArray(String root, String username, String classname, String currentTime) {
+		return "pushd " + root + "\n" + "java -cp . " + username + "." + classname + "." + currentTime + "." + classname;
+	}
+	
+	
+	private static String getExeCommand(String rootClass, String batName) {
+		return "cmd /c " + rootClass + "\\" + batName;
+	}
+	
+	
+	private static String run(String rootClass, String batName) throws IOException {
+		Runtime run = Runtime.getRuntime();
+		Process process = run.exec( getExeCommand(rootClass, batName) );
+
+		InputStream in = process.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		
+		String info = "";
+		String result = "";
+		while ((info = reader.readLine()) != null) {
+			result += info + "\n";
+		}
+		return result;
+	}
+	
+	
+	private static String getOutputResult(String result, String classname) {
+		String[] s = result.split(classname);
+		result = s[s.length - 1];
+		return "Compilation Success.\n" + "Result:" + result;
+	}
+	
+	
+	private static boolean hasCheated(Exercise exo, String code) {
+		switch (exo.getTitle()) {
+			case "Value Switch":
+				if ( code.contains("100") || code.contains("200") )
+					return true;
+				else
+					return false;
+			default:
+				return false;
+		}
 	}
 }
