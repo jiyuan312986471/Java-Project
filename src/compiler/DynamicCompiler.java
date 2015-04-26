@@ -21,9 +21,9 @@ import javax.tools.ToolProvider;
 import model.Exercise;
 import model.User;
 
-public class DynamicCompile {
+public class DynamicCompiler {
 	
-	public static String compile(Exercise exo, String code, User u) throws IOException {
+	public static String dynamicCompile(Exercise exo, String code, User u) throws IOException {
         // get classname
         String classname = getClassName(exo);
         String filename = classname + ".java";
@@ -31,27 +31,24 @@ public class DynamicCompile {
         // get username
         String username = u.getUserName();
         
-        // get time
+        // get current time
         String currentTime = getCurrentTime();
         
         // generate source code to compile        
         String source = setSrcCode(username, classname, currentTime, code, exo);
         
-        // write code into file
+        // create file path
         String root = "E:\\Lernen\\ESIGELEC\\2eme_annee\\J2EE\\Projet\\CodeEvaluation\\javaFiles\\";
         String rootExo = root + username + "\\" + classname;
         String rootClass = rootExo + "\\" + currentTime;
         File dir = new File(rootClass);
         
-        if ( !dir.exists() ) {  
-            dir.mkdirs();  
-        }
+        if ( !dir.exists() )
+        	dir.mkdirs();
         
-        FileWriter writer = new FileWriter(new File(dir,filename));  
-        writer.write(source);  
-        writer.flush();  
-        writer.close();  
-          
+        // write code into file
+        writeCode(dir, filename, source);
+        
         // get compiler
         JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
         
@@ -128,5 +125,12 @@ public class DynamicCompile {
 	
 	private static String setSrcCode(String username, String classname, String currentTime, String code, Exercise exo) {
 		return "package " + username + "." + classname + "." + currentTime + ";\n\n" + exo.getContentHead() + "\n" + code + "\n" + exo.getContentFoot();
+	}
+	
+	private static void writeCode(File dir, String filename, String src) throws IOException {
+		FileWriter writer = new FileWriter(new File(dir,filename));  
+        writer.write(src);
+        writer.flush();  
+        writer.close();
 	}
 }

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import compiler.DynamicCompile;
+import compiler.DynamicCompiler;
 
 import model.Exercise;
 import model.User;
@@ -33,7 +33,7 @@ public class CompilerServlet extends HttpServlet {
 		String code = req.getParameter("code");
 		
 		// compile
-		String result = DynamicCompile.compile(exo, code, u);
+		String result = DynamicCompiler.dynamicCompile(exo, code, u);
 		
 		// check result
 	}
