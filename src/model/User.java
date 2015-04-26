@@ -55,6 +55,9 @@ public class User implements Serializable {
 		this.password = password;
 	}
 	
+	public String getUserName() {
+		return firstName + " " + lastName;
+	}
 	
 	// email check
 	public static boolean isEmail(String email) {

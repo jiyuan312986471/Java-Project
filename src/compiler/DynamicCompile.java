@@ -25,24 +25,22 @@ public class DynamicCompile {
 	
 	public static String compile(Exercise exo, String code, User u) throws IOException {
         // get classname
-        String[] subs = exo.getContentHead().split("\\{")[0].split("class");
-        String classname = subs[subs.length - 1].trim();
+        String classname = getClassName(exo);
         String filename = classname + ".java";
         
         // get username
-        String username = u.getFirstName() + u.getLastName();
+        String username = u.getUserName();
         
         // get time
-        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd_HH_mm");
-        String time = "Exo" + df.format(new Date());
+        String currentTime = getCurrentTime();
         
-        // generate code to compile        
-        String source = "package " + u.getFirstName() + u.getLastName() + "." + classname + "." + time + ";\n\n" + exo.getContentHead() + "\n" + code + "\n" + exo.getContentFoot();
+        // generate source code to compile        
+        String source = setSrcCode(username, classname, currentTime, code, exo);
         
         // write code into file
         String root = "E:\\Lernen\\ESIGELEC\\2eme_annee\\J2EE\\Projet\\CodeEvaluation\\javaFiles\\";
         String rootExo = root + username + "\\" + classname;
-        String rootClass = rootExo + "\\" + time;
+        String rootClass = rootExo + "\\" + currentTime;
         File dir = new File(rootClass);
         
         if ( !dir.exists() ) {  
@@ -88,7 +86,7 @@ public class DynamicCompile {
 
 			// prepare commands
 			String command = "pushd " + root + "\n" + "java -cp . " + username
-					+ "." + classname + "." + time + "." + classname;
+					+ "." + classname + "." + currentTime + "." + classname;
 			String exeName = classname + ".bat";
 			FileWriter cmd = new FileWriter(new File(dir, exeName));
 			cmd.write(command);
@@ -116,5 +114,19 @@ public class DynamicCompile {
 			System.out.println(result);
 			return result;
 		}
+	}
+	
+	private static String getClassName(Exercise exo) {
+		String[] subs = exo.getContentHead().split("\\{")[0].split("class");
+        return subs[subs.length - 1].trim();
+	}
+	
+	private static String getCurrentTime() {
+		SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd_HH_mm");
+        return "Exo" + df.format(new Date());
+	}
+	
+	private static String setSrcCode(String username, String classname, String currentTime, String code, Exercise exo) {
+		return "package " + username + "." + classname + "." + currentTime + ";\n\n" + exo.getContentHead() + "\n" + code + "\n" + exo.getContentFoot();
 	}
 }
