@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,14 +33,9 @@ public class CompilerServlet extends HttpServlet {
 		String code = req.getParameter("code");
 		
 		// compile
-		String result = null;
-		try {
-			result = DynamicCompile.compile(exo, code, u);
-		} catch (ClassNotFoundException | NoSuchMethodException
-				| SecurityException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		String result = DynamicCompile.compile(exo, code, u);
+		
+		// check result
 	}
 
 }
