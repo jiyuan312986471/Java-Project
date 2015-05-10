@@ -1,9 +1,14 @@
 package controller;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import model.Exercise;
 
 @WebServlet("/ResultPageServlet")
 public class ResultPageServlet extends HttpServlet {
@@ -19,8 +24,19 @@ public class ResultPageServlet extends HttpServlet {
 	}
 	
 	// Servlet Service
-	public void service(HttpServletRequest req, HttpServletResponse resp) {
+	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// get user, exo and code
+		Exercise exo = (Exercise) req.getSession().getAttribute("exo");
+		String code = req.getSession().getAttribute("code").toString();
 		
+		// generate source code
+		String srcCode = exo.getContentHead() + "\n" + code + "\n" + exo.getContentFoot();
+		
+		// store source code into session
+		req.getSession().setAttribute("code", srcCode);
+		
+		// turn to result page
+		req.getRequestDispatcher("/page/ResultPage.jsp").forward(req, resp);
 	}
 
 }

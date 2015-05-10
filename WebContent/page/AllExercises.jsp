@@ -19,7 +19,7 @@
 <div class="container">
 	<div class="modal-content" style="filter:alpha(Opacity=95); -moz-opacity:0.95; opacity:0.95; background-color:black; color:white;">
 		<div class="modal-header">
-        	<h4 class="modal-title" id="myModalLabel">All Projects</h4>
+        	<h4 class="modal-title" id="myModalLabel">All Exercises</h4>
     	</div>
         
         <% if ( listExo == null || listExo.size() <= 0 ) { %>
