@@ -29,6 +29,14 @@ public class ResultPageServlet extends HttpServlet {
 		Exercise exo = (Exercise) req.getSession().getAttribute("exo");
 		String code = req.getSession().getAttribute("code").toString();
 		
+		// code process
+		String[] split = code.split("\\n");
+		code = "";
+		for (String s: split) {
+			s = "		" + s;
+			code = code + s + "\n";
+		}
+		
 		// generate source code
 		String srcCode = exo.getContentHead() + "\n" + code + "\n" + exo.getContentFoot();
 		

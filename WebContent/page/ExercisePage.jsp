@@ -49,7 +49,7 @@
 					<div class="col-sm-offset-1">
 						<div class="col-sm-11">
 							<pre><%= exo.getContentHead() %><textarea style="overflow:scroll; overflow-x:hidden;" class="form-control" placeholder="Write your code here..." rows="10" name="code"><%= request.getParameter("code")==null?"":request.getParameter("code")%></textarea>
-		<%= exo.getContentFoot() %></pre>
+<%= exo.getContentFoot() %></pre>
 						</div>
 					</div>
 				</div>

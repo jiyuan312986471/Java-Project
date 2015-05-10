@@ -16,6 +16,7 @@
 
 <%  Exercise exo = (Exercise) session.getAttribute("exo"); %>
 <%  String  code = session.getAttribute("code").toString(); %>
+<%  String result = request.getAttribute("result").toString(); %>
 
 <div class="container">
 
@@ -53,8 +54,27 @@
 				</div>
 			</div>
 		</div>
+		
+		<hr>
+
+		<div class="modal-body">
+			<div class="form-group">
+				<div class="row">
+				 	<label class="col-sm-2"><h4>Result</h4></label>
+				</div>
+				
+				<div class="row">
+					<div class="col-sm-offset-1">
+						<div class="col-sm-11">
+							<pre><%= result %></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		         
 		<div class="modal-footer">
+			<a class="btn btn-primary" href="<%= request.getContextPath()%>/AllExercisesServlet" role="button">All Exercises</a>
 		    <a class="btn btn-default" href="<%= request.getContextPath()%>/ExercisePageServlet?exoTitle=<%= exo.getTitle() %>" role="button">Retry</a>
 		</div>
 	</div>

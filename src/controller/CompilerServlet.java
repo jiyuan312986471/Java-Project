@@ -35,8 +35,9 @@ public class CompilerServlet extends HttpServlet {
 		// compile
 		String result = DynamicCompiler.dynamicCompile(exo, code, u);
 		
-		// store code into session
+		// store code and result into session
 		req.getSession().setAttribute("code", code);
+		req.setAttribute("result", result);
 		
 		// turn to result page
 		req.getRequestDispatcher("/ResultPageServlet").forward(req, resp);
