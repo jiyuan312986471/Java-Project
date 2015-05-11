@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;  
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
@@ -174,10 +176,10 @@ public class DynamicCompiler {
 	private static boolean hasCheated(Exercise exo, String code) {
 		switch (exo.getTitle()) {
 			case "Value Switch":
-				if ( code.contains("100") || code.contains("200") )
-					return true;
-				else
-					return false;
+				String regex = "\\d+";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher match = pattern.matcher(code);
+				return match.find();
 			default:
 				return false;
 		}

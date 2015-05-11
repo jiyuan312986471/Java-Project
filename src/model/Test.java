@@ -8,9 +8,10 @@ public class Test implements Serializable {
 	
 	private String exoTitle;
 	private String input;
-	private String output;
 	
-	public Test() {
+	public Test(String exoTitle, String input) {
+		setExoTitle(exoTitle);
+		setInput(input);
 	}
 	
 	public String getExoTitle() {
@@ -21,20 +22,12 @@ public class Test implements Serializable {
 		return input;
 	}
 	
-	public String getOutput() {
-		return output;
-	}
-	
 	public void setExoTitle(String exoTitle) {
 		this.exoTitle = exoTitle;
 	}
 	
 	public void setInput(String input) {
 		this.input = input;
-	}
-	
-	public void setOutput(String output) {
-		this.output = output;
 	}
 
 }
