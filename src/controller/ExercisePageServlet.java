@@ -16,6 +16,8 @@ public class ExercisePageServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -8810490687275553270L;
 	
+	private static String msgErrorLogin = "Please login";
+	
 	public ExercisePageServlet() {
 		super();
 	}
@@ -26,22 +28,28 @@ public class ExercisePageServlet extends HttpServlet {
 	
 	// Servlet Service
 	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// get title
-		String title = req.getParameter("exoTitle");
-		
-		// get exo from db
-		Exercise exo = null;
-		try {
-			exo = ExerciseDB.getExoByTitle(title);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if ( req.getSession().getAttribute("mail") == null ) {
+			req.getSession().setAttribute("messageError", msgErrorLogin);
+			resp.sendRedirect("index.jsp");
 		}
-		
-		// save to request
-		req.getSession().setAttribute("exo", exo);
-		
-		// forward to ExercisePage
-		req.getRequestDispatcher("/page/ExercisePage.jsp").forward(req, resp);
+		else {
+			// get title
+			String title = req.getParameter("exoTitle");
+			
+			// get exo from db
+			Exercise exo = null;
+			try {
+				exo = ExerciseDB.getExoByTitle(title);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			// save to request
+			req.getSession().setAttribute("exo", exo);
+			
+			// forward to ExercisePage
+			req.getRequestDispatcher("/page/ExercisePage.jsp").forward(req, resp);
+		}
 	}
 
 }

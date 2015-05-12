@@ -15,6 +15,8 @@ public class ResultPageServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -4587571621273999391L;
 	
+	private static String msgErrorLogin = "Please login";
+	
 	public ResultPageServlet() {
 		super();
 	}
@@ -25,26 +27,33 @@ public class ResultPageServlet extends HttpServlet {
 	
 	// Servlet Service
 	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// get user, exo and code
-		Exercise exo = (Exercise) req.getSession().getAttribute("exo");
-		String code = req.getSession().getAttribute("code").toString();
-		
-		// code process
-		String[] split = code.split("\\n");
-		code = "";
-		for (String s: split) {
-			s = "		" + s;
-			code = code + s + "\n";
+		if ( req.getSession().getAttribute("mail") == null ) {
+			req.getSession().setAttribute("messageError", msgErrorLogin);
+			resp.sendRedirect("index.jsp");
 		}
-		
-		// generate source code
-		String srcCode = exo.getContentHead() + "\n" + code + "\n" + exo.getContentFoot();
-		
-		// store source code into session
-		req.getSession().setAttribute("code", srcCode);
-		
-		// turn to result page
-		req.getRequestDispatcher("/page/ResultPage.jsp").forward(req, resp);
+		else {
+			// get user, exo and code
+			Exercise exo = (Exercise) req.getSession().getAttribute("exo");
+			String code = req.getSession().getAttribute("code").toString();
+
+			// code process
+			String[] split = code.split("\\n");
+			code = "";
+			for (String s : split) {
+				s = "		" + s;
+				code = code + s + "\n";
+			}
+
+			// generate source code
+			String srcCode = exo.getContentHead() + "\n" + code + "\n"
+					+ exo.getContentFoot();
+
+			// store source code into session
+			req.getSession().setAttribute("code", srcCode);
+
+			// turn to result page
+			req.getRequestDispatcher("/page/ResultPage.jsp").forward(req, resp);
+		}
 	}
 
 }
